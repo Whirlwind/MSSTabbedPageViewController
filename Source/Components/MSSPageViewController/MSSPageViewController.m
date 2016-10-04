@@ -39,9 +39,7 @@ NSInteger const MSSPageViewControllerPageNumberInvalid = -1;
 @end
 
 
-@interface MSSPageViewController () <UIPageViewControllerDataSource, UIPageViewControllerDelegate> {
-    BOOL _viewHasLoaded;
-}
+@interface MSSPageViewController () <UIPageViewControllerDataSource, UIPageViewControllerDelegate>
 
 @property (nonatomic, strong) UIPageViewController *pageViewController;
 @property (nonatomic, assign) CGFloat previousPagePosition;
@@ -84,22 +82,17 @@ NSInteger const MSSPageViewControllerPageNumberInvalid = -1;
 
 #pragma mark - Lifecycle
 
-- (void)loadView {
-    [super loadView];
-    
+- (void)viewDidLoad {
+    [super viewDidLoad];
+
     if (!_pageViewController) {
         self.pageViewController = [[UIPageViewController alloc]initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll
-                                                                  navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal
-                                                                                options:nil];
+                                                                 navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal
+                                                                               options:nil];
         self.pageViewController.dataSource = self;
         self.pageViewController.delegate = self;
     }
-}
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    _viewHasLoaded = YES;
-    
     [self.pageViewController mss_addToParentViewController:self atZIndex:0];
     self.scrollView.delegate = self;
     
@@ -181,7 +174,7 @@ NSInteger const MSSPageViewControllerPageNumberInvalid = -1;
 
 - (void)setDataSource:(id<MSSPageViewControllerDataSource>)dataSource {
     _dataSource = dataSource;
-    if (_viewHasLoaded) {
+    if (self.isViewLoaded) {
         [self setUpPages];
     }
 }
