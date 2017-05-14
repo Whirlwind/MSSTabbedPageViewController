@@ -172,9 +172,17 @@ NSInteger const MSSPageViewControllerPageNumberInvalid = -1;
     return self.scrollView.scrollEnabled;
 }
 
+- (void)setUserInteractionEnabled:(BOOL)userInteractionEnabled {
+    self.pageViewController.view.userInteractionEnabled = userInteractionEnabled;
+}
+
+- (BOOL)userInteractionEnabled {
+    return self.pageViewController.view.userInteractionEnabled;
+}
+
 - (void)setDataSource:(id<MSSPageViewControllerDataSource>)dataSource {
     _dataSource = dataSource;
-    if (self.isViewLoaded) {
+    if (self.isViewLoaded && dataSource != _dataSource) {
         [self setUpPages];
     }
 }
@@ -191,14 +199,6 @@ NSInteger const MSSPageViewControllerPageNumberInvalid = -1;
         return _delegate;
     }
     return self;
-}
-
-- (void)setUserInteractionEnabled:(BOOL)userInteractionEnabled {
-    self.scrollView.userInteractionEnabled = userInteractionEnabled;
-}
-
-- (BOOL)userInteractionEnabled {
-    return self.scrollView.userInteractionEnabled;
 }
 
 - (NSInteger)defaultPageIndex {
@@ -304,9 +304,10 @@ NSInteger const MSSPageViewControllerPageNumberInvalid = -1;
     self.view.userInteractionEnabled = YES;
     
     if (currentPage >= 0 && currentPage < self.numberOfPages) {
+        NSInteger fromPage = _currentPage;
         _currentPage = currentPage;
-        if ([self.delegate respondsToSelector:@selector(pageViewController:didScrollToPage:)]) {
-            [self.delegate pageViewController:self didScrollToPage:self.currentPage];
+        if ([self.delegate respondsToSelector:@selector(pageViewController:didScrollToPage:fromPage:)]) {
+            [self.delegate pageViewController:self didScrollToPage:self.currentPage fromPage:fromPage];
         }
     }
 }

@@ -75,7 +75,8 @@ typedef void(^MSSPageViewControllerPageMoveCompletion)(UIViewController *_Nullab
  The new currently visible page.
  */
 - (void)pageViewController:(nonnull MSSPageViewController *)pageViewController
-           didScrollToPage:(NSInteger)page;
+           didScrollToPage:(NSInteger)page
+                  fromPage:(NSInteger)fromPage;
 
 /**
  The page view controller has successfully prepared child view controllers ready for display.
@@ -165,6 +166,10 @@ willDisplayInitialViewController:(nonnull UIViewController *)viewController;
  Whether scroll view interaction is enabled on the page view controller.
  */
 @property (nonatomic, assign, getter=isScrollEnabled) BOOL scrollEnabled;
+/**
+ Whether user interaction is allowed on the page view controller.
+ */
+@property (nonatomic, assign) BOOL userInteractionEnabled;
 /**
  Whether page view controller will provide scroll updates when out of bounds.
  */

@@ -46,6 +46,7 @@
         tabBarView.dataSource = self;
         tabBarView.delegate = self;
         self.tabBarView = tabBarView;
+        self.tabBarView.hidden = NO;
         
         BOOL isInitialController = (self.navigationController.viewControllers.firstObject == self);
         [navigationBar tabbedPageViewController:self viewWillAppear:animated isInitial:isInitialController];
@@ -64,6 +65,7 @@
         }
         
         // remove the current tab bar
+        self.tabBarView.hidden = YES;
         self.tabBarView = nil;
     }
 }
@@ -118,6 +120,11 @@
 #pragma mark - Page View Controller delegate
 
 - (void)pageViewController:(MSSPageViewController *)pageViewController
+willDisplayInitialViewController:(UIViewController *)viewController{
+
+}
+
+- (void)pageViewController:(MSSPageViewController *)pageViewController
      didScrollToPageOffset:(CGFloat)pageOffset
                  direction:(MSSPageViewControllerScrollDirection)scrollDirection {
     [self.tabBarView setTabOffset:pageOffset];
@@ -130,7 +137,8 @@
 }
 
 - (void)pageViewController:(MSSPageViewController *)pageViewController
-           didScrollToPage:(NSInteger)page {
+           didScrollToPage:(NSInteger)page
+                  fromPage:(NSInteger)fromPage {
     
     if (!self.isDragging) {
         self.tabBarView.userInteractionEnabled = YES;
