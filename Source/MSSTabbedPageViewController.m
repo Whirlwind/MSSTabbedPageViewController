@@ -103,6 +103,11 @@
 
 - (void)tabBarView:(MSSTabBarView *)tabBarView tabSelectedAtIndex:(NSInteger)index {
     if (index != self.currentPage && !self.isAnimatingPageUpdate && index < self.viewControllers.count) {
+        if ([self.delegate respondsToSelector:@selector(pageViewController:willScrollToPage:currentPage:)]) {
+            [self.delegate pageViewController:self
+                             willScrollToPage:index
+                                  currentPage:self.currentPage];
+        }
         self.allowScrollViewUpdates = NO;
         self.userInteractionEnabled = NO;
         
